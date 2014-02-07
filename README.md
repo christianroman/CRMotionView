@@ -7,41 +7,41 @@ Custom motion photo viewer inspired by [Facebook Paper][4].
 Usage
 -----
 
- 1. Add the dependency to your Podfile:
+* Add the dependency to your Podfile:
 ```ruby
 platform :ios
 pod 'CRMotionView'
 ...
 ```
 
- 1. Run `pod install` to install the dependencies.
+* Run `pod install` to install the dependencies.
 
- 1. Import the header file wherever you want to use:
+* Import the header file wherever you want to use:
 ```objc
 #import "CRMotionView.h"
 ```
 
- 1. **Create an instance***
+* **Create an instance**
 ```objc
 CRMotionView *motionView = [[CRMotionView alloc] initWithFrame:self.view.bounds];
 ```
 
- 1. Set the image
+* **Set the image**
 ```objc
 [motionView setImage:[UIImage imageNamed:@"Image"]];
 ```
 
- 1. Add to your view
+* Add to your view
 ```objc
 [self.view addSubview:motionView];
 ```
 
- 1. Additionally, if you need to disable motion
+* Additionally, if you need to disable motion
 ```objc
 [motionView setMotionEnabled:NO];
 ```
 
-**Full example:**
+* **Full example:**
 ```objc
 CRMotionView *motionView = [[CRMotionView alloc] initWithFrame:self.view.bounds];
 [motionView setImage:[UIImage imageNamed:@"Image"]];
