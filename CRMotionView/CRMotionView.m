@@ -77,7 +77,6 @@ static const CGFloat CRMotionViewRotationFactor = 3.5f;
     
     CGFloat width = _viewFrame.size.height / _image.size.height * _image.size.width;
     [_imageView setFrame:CGRectMake(0, 0, width, _viewFrame.size.height)];
-    //[_imageView setFrame:CGRectMake(0, 0, _image.size.width, _viewFrame.size.height)];
     [_imageView setBackgroundColor:[UIColor blackColor]];
     [_imageView setImage:_image];
     
