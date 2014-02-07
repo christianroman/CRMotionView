@@ -4,8 +4,10 @@ Custom motion photo viewer inspired by [Facebook Paper][4].
 
 ![CRMotionView-main](http://chroman.me/wp-content/uploads/2014/02/main2.png)
 
-Usage
+Installation
 -----
+
+**CocoaPods**
 
 * Add the dependency to your Podfile:
 ```ruby
@@ -15,6 +17,13 @@ pod 'CRMotionView'
 ```
 
 * Run `pod install` to install the dependencies.
+
+**Source files**
+
+Just clone this repository or download it in zip-file. Then you will find source files under CRMotionView directory. Copy them to your project.
+
+Usage
+-----
 
 * Import the header file wherever you want to use:
 ```objc
