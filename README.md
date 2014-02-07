@@ -2,7 +2,7 @@ CRMotionView
 =======================
 Custom motion photo viewer inspired by [Facebook Paper][4].
 
-![CRMotionView-main](http://chroman.me/wp-content/uploads/2014/02/main2.png)
+![CRMotionView-main](http://chroman.me/wp-content/uploads/2014/02/main.jpg)
 
 Installation
 -----
