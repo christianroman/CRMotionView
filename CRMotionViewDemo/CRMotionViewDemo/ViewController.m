@@ -31,8 +31,6 @@
     CRMotionView *motionView = [[CRMotionView alloc] initWithFrame:self.view.bounds];
     [motionView setImage:[UIImage imageNamed:@"Image"]];
     [self.view addSubview:motionView];
-    
-    [motionView setMotionEnabled:YES];
 }
 
 - (void)didReceiveMemoryWarning

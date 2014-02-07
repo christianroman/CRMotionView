@@ -55,7 +55,7 @@ static const CGFloat CRMotionViewRotationFactor = 3.5f;
 - (void)commonInit
 {
     _scrollView = [[UIScrollView alloc] initWithFrame:_viewFrame];
-    [_scrollView setUserInteractionEnabled:NO];
+    [_scrollView setUserInteractionEnabled:YES];
     [_scrollView setBounces:NO];
     [_scrollView setContentSize:CGSizeZero];
     [self addSubview:_scrollView];
@@ -74,7 +74,10 @@ static const CGFloat CRMotionViewRotationFactor = 3.5f;
 - (void)setImage:(UIImage *)image
 {
     _image = image;
-    [_imageView setFrame:CGRectMake(0, 0, _image.size.width, _viewFrame.size.height)];
+    
+    CGFloat width = _viewFrame.size.height / _image.size.height * _image.size.width;
+    [_imageView setFrame:CGRectMake(0, 0, width, _viewFrame.size.height)];
+    //[_imageView setFrame:CGRectMake(0, 0, _image.size.width, _viewFrame.size.height)];
     [_imageView setBackgroundColor:[UIColor blackColor]];
     [_imageView setImage:_image];
     
