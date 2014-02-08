@@ -2,7 +2,7 @@ CRMotionView
 =======================
 Custom motion photo viewer inspired by [Facebook Paper][4].
 
-![CRMotionView-main](http://chroman.me/wp-content/uploads/2014/02/main.jpg)
+![CRMotionView-main](http://chroman.me/wp-content/uploads/2014/02/main1.jpg)
 
 Installation
 -----
@@ -20,12 +20,12 @@ pod 'CRMotionView'
 
 **Source files**
 
-Just clone this repository or download it in zip-file. Then you will find source files under CRMotionView directory. Copy them to your project.
+Just clone this repository or download it in zip-file. Then you will find source files under **CRMotionView** directory. Copy them to your project.
 
 Usage
 -----
 
-* Import the header file wherever you want to use:
+* Import the header file to your view controller:
 ```objc
 #import "CRMotionView.h"
 ```
@@ -63,16 +63,23 @@ Example
 ![CRMotionView-demo1](http://chroman.me/wp-content/uploads/2014/02/demo1.gif)
 ![CRMotionView-demo2](http://chroman.me/wp-content/uploads/2014/02/demo2.gif)
 
-
-TODO
-----------
-* UIScrollView horizontal scroll bar (Working on it).
-* Behaviour similarly to Facebook paper app.
-
 Requirements
 ----------
 * iOS 6.0 or higher
 * ARC
+
+Bugs
+----------
+* UIScrollView horizontal scroll bar align not handled correctly in some cases.
+* Device landscape orientation.
+
+Contributing
+----------
+Anyone who would like to contribute to the project is more than welcome.
+
+* Fork this repo
+* Make your changes
+* Submit a pull request
 
 ## License
 CRMotionView is released under the MIT license. See

@@ -7,6 +7,7 @@
 //
 
 #import "CRMotionView.h"
+#import "UIScrollView+CRScrollIndicator.h"
 
 @import CoreMotion;
 
@@ -83,6 +84,8 @@ static const CGFloat CRMotionViewRotationFactor = 3.5f;
     _scrollView.contentSize = CGSizeMake(_imageView.frame.size.width, _scrollView.frame.size.height);
     _scrollView.contentOffset = CGPointMake((_scrollView.contentSize.width - _scrollView.frame.size.width) / 2, 0);
     
+    [_scrollView enableScrollIndicator];
+    
     _motionRate = _image.size.width / _viewFrame.size.width * CRMotionViewRotationFactor;
     _maximumXOffset = _scrollView.contentSize.width - _scrollView.frame.size.width;
 }
@@ -128,6 +131,11 @@ static const CGFloat CRMotionViewRotationFactor = 3.5f;
 - (void)stopMonitoring
 {
     [_motionManager stopGyroUpdates];
+}
+
+- (void)dealloc
+{
+    [self.scrollView disableScrollIndicator];
 }
 
 @end
