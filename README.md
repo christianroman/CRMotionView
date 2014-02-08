@@ -60,8 +60,9 @@ CRMotionView *motionView = [[CRMotionView alloc] initWithFrame:self.view.bounds]
 Example
 ----------
 
-![CRMotionView-demo1](http://chroman.me/wp-content/uploads/2014/02/demo1.gif)
-![CRMotionView-demo2](http://chroman.me/wp-content/uploads/2014/02/demo2.gif)
+![CRMotionView-demo1](http://chroman.me/wp-content/uploads/2014/02/example1.gif)
+![CRMotionView-demo2](http://chroman.me/wp-content/uploads/2014/02/example2.gif)
+![CRMotionView-demo3](http://chroman.me/wp-content/uploads/2014/02/example3.gif)
 
 Requirements
 ----------
