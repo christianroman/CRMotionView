@@ -61,7 +61,9 @@ Example
 ----------
 
 ![CRMotionView-demo1](http://chroman.me/wp-content/uploads/2014/02/example1.gif)
+
 ![CRMotionView-demo2](http://chroman.me/wp-content/uploads/2014/02/example2.gif)
+
 ![CRMotionView-demo3](http://chroman.me/wp-content/uploads/2014/02/example3.gif)
 
 Requirements
