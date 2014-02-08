@@ -2,7 +2,7 @@ CRMotionView
 =======================
 Custom motion photo viewer inspired by [Facebook Paper][4].
 
-![CRMotionView-main](http://chroman.me/wp-content/uploads/2014/02/main1.jpg)
+![CRMotionView-main](http://chroman.me/wp-content/uploads/2014/02/main.jpg)
 
 Installation
 -----
@@ -70,7 +70,7 @@ Requirements
 
 Bugs
 ----------
-* UIScrollView horizontal scroll bar align not handled correctly in some cases.
+* UIScrollView's scroll bar indicator align not handled correctly in some cases.
 * Device landscape orientation.
 
 Contributing
