@@ -55,7 +55,7 @@ static const CGFloat CRMotionViewRotationFactor = 3.5f;
 - (void)commonInit
 {
     _scrollView = [[UIScrollView alloc] initWithFrame:_viewFrame];
-    [_scrollView setUserInteractionEnabled:YES];
+    [_scrollView setUserInteractionEnabled:NO];
     [_scrollView setBounces:NO];
     [_scrollView setContentSize:CGSizeZero];
     [self addSubview:_scrollView];
