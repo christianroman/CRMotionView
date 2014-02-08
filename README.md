@@ -67,11 +67,12 @@ Requirements
 ----------
 * iOS 6.0 or higher
 * ARC
+* Core Motion Framework
 
 Bugs
 ----------
 * UIScrollView's scroll bar indicator align not handled correctly in some cases.
-* Device landscape orientation.
+* Device landscape orientation (Both, iPhone and iPad).
 
 Contributing
 ----------

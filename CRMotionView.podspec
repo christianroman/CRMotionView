@@ -3,8 +3,8 @@ Pod::Spec.new do |s|
   s.name         = "CRMotionView"
   s.version      = "0.1"
   s.summary      = "Custom motion photo viewer inspired by Facebook Paper."
-  s.homepage     = "https://github.com/chroman/CRGradientNavigationBar"
-  s.screenshots  = "http://chroman.me/wp-content/uploads/2013/10/main.png"
+  s.homepage     = "https://github.com/chroman/CRMotionView"
+  s.screenshots  = "http://chroman.me/wp-content/uploads/2014/02/main3.jpg"
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
   s.author       = { "Christian Roman" => "chroman16@gmail.com" }
   s.source       = {
