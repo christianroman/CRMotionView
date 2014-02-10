@@ -1,6 +1,9 @@
 CRMotionView
 =======================
-Custom motion photo viewer inspired by [Facebook Paper][4].
+A custom photo viewer that implements device motion scrolling, inspired by [Facebook Paper][4].
+
+[![Cocoapods](https://cocoapod-badges.herokuapp.com/v/CRMotionView/badge.png)](http://beta.cocoapods.org/?q=CRMotionView)
+[![Cocoapods](https://cocoapod-badges.herokuapp.com/p/CRMotionView/badge.png)](http://beta.cocoapods.org/?q=CRMotionView)
 
 ![CRMotionView-main](http://chroman.me/wp-content/uploads/2014/02/main3.jpg)
 
@@ -70,7 +73,7 @@ Requirements
 ----------
 * iOS 6.0 or higher
 * ARC
-* Core Motion Framework
+* Core Motion
 
 Bugs
 ----------
