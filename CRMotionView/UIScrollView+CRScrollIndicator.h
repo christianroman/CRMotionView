@@ -10,8 +10,8 @@
 
 @interface UIScrollView (CRScrollIndicator)
 
-- (void)enableScrollIndicator;
-- (void)disableScrollIndicator;
-- (void)refreshScrollIndicator;
+- (void)cr_enableScrollIndicator;
+- (void)cr_disableScrollIndicator;
+- (void)cr_refreshScrollIndicator;
 
 @end
