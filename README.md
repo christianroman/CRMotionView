@@ -2,8 +2,10 @@ CRMotionView
 =======================
 A custom photo viewer that implements device motion scrolling, inspired by [Facebook Paper][4].
 
-[![Cocoapods](https://cocoapod-badges.herokuapp.com/v/CRMotionView/badge.png)](http://beta.cocoapods.org/?q=CRMotionView)
-[![Cocoapods](https://cocoapod-badges.herokuapp.com/p/CRMotionView/badge.png)](http://beta.cocoapods.org/?q=CRMotionView)
+[![License MIT](https://go-shields.herokuapp.com/license-MIT-blue.png)](https://github.com/chroman/CRMotionView/blob/master/LICENSE)
+[![Build Platform](https://cocoapod-badges.herokuapp.com/p/CRMotionView/badge.png)](http://beta.cocoapods.org/?q=CRMotionView)
+[![Build Version](https://cocoapod-badges.herokuapp.com/v/CRMotionView/badge.png)](http://beta.cocoapods.org/?q=CRMotionView)
+[![Build Status](https://travis-ci.org/chroman/CRMotionView.png?branch=master)](https://travis-ci.org/chroman/CRMotionView)
 
 ![CRMotionView-main](http://chroman.me/wp-content/uploads/2014/02/main3.jpg)
 
