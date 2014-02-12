@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "CRMotionView"
-  s.version      = "0.1"
+  s.version      = "0.2"
   s.summary      = "A custom photo viewer that implements device motion scrolling, inspired by Facebook Paper."
   s.homepage     = "https://github.com/chroman/CRMotionView"
   s.screenshots  = "http://chroman.me/wp-content/uploads/2014/02/main3.jpg"
