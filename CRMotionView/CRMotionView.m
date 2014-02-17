@@ -120,7 +120,13 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
                                             } else if (offsetX < _minimumXOffset) {
                                                 offsetX = _minimumXOffset;
                                             }
-                                            [_scrollView setContentOffset:CGPointMake(offsetX, 0) animated:NO];
+                                            [UIView animateWithDuration:0.3f
+                                                                  delay:0.0f
+                                                                options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionCurveEaseOut
+                                                             animations:^{
+                                                                 [_scrollView setContentOffset:CGPointMake(offsetX, 0) animated:NO];
+                                            }
+                                                             completion:nil];
                                         }
                                     }];
     } else {
