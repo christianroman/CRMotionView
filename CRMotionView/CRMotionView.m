@@ -35,7 +35,7 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
 {
     self = [super initWithFrame:frame];
     if (self) {
-        _viewFrame = frame;
+        _viewFrame = CGRectMake(0.0, 0.0, CGRectGetWidth(frame), CGRectGetHeight(frame));
         [self commonInit];
         
     }
@@ -44,10 +44,8 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
 
 - (instancetype)initWithFrame:(CGRect)frame image:(UIImage *)image
 {
-    self = [super initWithFrame:frame];
+    self = [self initWithFrame:frame];
     if (self) {
-        _viewFrame = frame;
-        [self commonInit];
         [self setImage:image];
     }
     return self;
