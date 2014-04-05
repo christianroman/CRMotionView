@@ -70,22 +70,9 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
 
 #pragma mark - Setters
 
-- (void)setImage:(UIImage *)image
+- (void)setImage:(UIImage *) image
 {
-    _image = image;
-    
-    CGFloat width = _viewFrame.size.height / _image.size.height * _image.size.width;
-    [_imageView setFrame:CGRectMake(0, 0, width, _viewFrame.size.height)];
-    [_imageView setBackgroundColor:[UIColor blackColor]];
-    [_imageView setImage:_image];
-    
-    _scrollView.contentSize = CGSizeMake(_imageView.frame.size.width, _scrollView.frame.size.height);
-    _scrollView.contentOffset = CGPointMake((_scrollView.contentSize.width - _scrollView.frame.size.width) / 2, 0);
-    
-    [_scrollView cr_enableScrollIndicator];
-    
-    _motionRate = _image.size.width / _viewFrame.size.width * CRMotionViewRotationFactor;
-    _maximumXOffset = _scrollView.contentSize.width - _scrollView.frame.size.width;
+   [self setImage:image withScrollIndicator:NO];
 }
 
 - (void)setMotionEnabled:(BOOL)motionEnabled
@@ -97,6 +84,34 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
         [self stopMonitoring];
     }
 }
+
+#pragma mark - Configuration
+
+- (void)setImage:(UIImage *)image withScrollIndicator:(BOOL)indicator {
+     _image = image;
+    
+    CGFloat width = _viewFrame.size.height / _image.size.height * _image.size.width;
+    [_imageView setFrame:CGRectMake(0, 0, width, _viewFrame.size.height)];
+    [_imageView setBackgroundColor:[UIColor blackColor]];
+    [_imageView setImage:_image];
+    
+    _scrollView.contentSize = CGSizeMake(_imageView.frame.size.width, _scrollView.frame.size.height);
+    _scrollView.contentOffset = CGPointMake((_scrollView.contentSize.width - _scrollView.frame.size.width) / 2, 0);
+    
+    _motionRate = _image.size.width / _viewFrame.size.width * CRMotionViewRotationFactor;
+    _maximumXOffset = _scrollView.contentSize.width - _scrollView.frame.size.width;
+
+    if (indicator) 
+    {
+        [self setScrollIndicator];
+    }
+}
+
+- (void)setScrollIndicator{
+   [_scrollView cr_enableScrollIndicator];
+}
+
+
 
 #pragma mark - Core Motion
 

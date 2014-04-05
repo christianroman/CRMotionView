@@ -55,6 +55,11 @@ CRMotionView *motionView = [[CRMotionView alloc] initWithFrame:self.view.bounds]
 [motionView setMotionEnabled:NO];
 ```
 
+* If you don't want the scroll indicator, use
+```objc
+[motionView setImage:[UIImage imageNamed:@"Image"] withScrollIndicator:NO];
+```
+
 * **Full example:**
 ```objc
 CRMotionView *motionView = [[CRMotionView alloc] initWithFrame:self.view.bounds];
