@@ -44,29 +44,32 @@ static const CGFloat CRScrollIndicatorLeftRightThreshold = 16.0f;
 
 - (void)cr_enableScrollIndicator
 {
-    self.showsHorizontalScrollIndicator = NO;
-    UIColor *indicatorColor = [UIColor whiteColor];
-    
-    // Configure the scroll indicator's background
-    CGFloat backgroundIndicatorWidth = self.frame.size.width - (CRScrollIndicatorLeftRightThreshold * 2);
-    CGRect backgroundIndicatorFrame = CGRectMake(self.contentOffset.x + (self.frame.size.width / 2) - (backgroundIndicatorWidth / 2), self.frame.size.height - CRScrollIndicatorHeight - CRScrollIndicatorBottomSpace, backgroundIndicatorWidth, CRScrollIndicatorHeight);
-    UIView *backgroundViewScrollIndicator = [[UIView alloc] initWithFrame:backgroundIndicatorFrame];
-    [backgroundViewScrollIndicator setBackgroundColor:[indicatorColor colorWithAlphaComponent:0.50]];
-    [self cr_setBackgroundViewForScrollIndicator:backgroundViewScrollIndicator];
-    [self addSubview:backgroundViewScrollIndicator];
-    
-    // Configure the scroll indicator
-    CGFloat viewScrollIndicatorWidth = (self.bounds.size.width - (CRScrollIndicatorLeftRightThreshold * 2)) * (self.bounds.size.width - (CRScrollIndicatorLeftRightThreshold * 2)) / self.contentSize.width;
-    if (viewScrollIndicatorWidth < CRScrollIndicatorDefaultWidth) {
-        viewScrollIndicatorWidth = CRScrollIndicatorDefaultWidth;
+    if (![self cr_getBackgroundViewForScrollIndicator] && ![self cr_getViewForScrollIndicator])
+    {
+        self.showsHorizontalScrollIndicator = NO;
+        UIColor *indicatorColor = [UIColor whiteColor];
+        
+        // Configure the scroll indicator's background
+        CGFloat backgroundIndicatorWidth = self.frame.size.width - (CRScrollIndicatorLeftRightThreshold * 2);
+        CGRect backgroundIndicatorFrame = CGRectMake(self.contentOffset.x + (self.frame.size.width / 2) - (backgroundIndicatorWidth / 2), self.frame.size.height - CRScrollIndicatorHeight - CRScrollIndicatorBottomSpace, backgroundIndicatorWidth, CRScrollIndicatorHeight);
+        UIView *backgroundViewScrollIndicator = [[UIView alloc] initWithFrame:backgroundIndicatorFrame];
+        [backgroundViewScrollIndicator setBackgroundColor:[indicatorColor colorWithAlphaComponent:0.50]];
+        [self cr_setBackgroundViewForScrollIndicator:backgroundViewScrollIndicator];
+        [self addSubview:backgroundViewScrollIndicator];
+        
+        // Configure the scroll indicator
+        CGFloat viewScrollIndicatorWidth = (self.bounds.size.width - (CRScrollIndicatorLeftRightThreshold * 2)) * (self.bounds.size.width - (CRScrollIndicatorLeftRightThreshold * 2)) / self.contentSize.width;
+        if (viewScrollIndicatorWidth < CRScrollIndicatorDefaultWidth) {
+            viewScrollIndicatorWidth = CRScrollIndicatorDefaultWidth;
+        }
+        CGRect frame = CGRectMake(self.contentOffset.x + (self.frame.size.width / 2) - (viewScrollIndicatorWidth / 2), self.frame.size.height - CRScrollIndicatorHeight - CRScrollIndicatorBottomSpace, viewScrollIndicatorWidth, CRScrollIndicatorHeight);
+        UIView *viewScrollIndicator = [[UIView alloc] initWithFrame:frame];
+        [viewScrollIndicator setBackgroundColor:[indicatorColor colorWithAlphaComponent:1.0f]];
+        [self cr_setViewForScrollIndicator:viewScrollIndicator];
+        [self addSubview:viewScrollIndicator];
+        
+        [self cr_setupObservers];
     }
-    CGRect frame = CGRectMake(self.contentOffset.x + (self.frame.size.width / 2) - (viewScrollIndicatorWidth / 2), self.frame.size.height - CRScrollIndicatorHeight - CRScrollIndicatorBottomSpace, viewScrollIndicatorWidth, CRScrollIndicatorHeight);
-    UIView *viewScrollIndicator = [[UIView alloc] initWithFrame:frame];
-    [viewScrollIndicator setBackgroundColor:[indicatorColor colorWithAlphaComponent:1.0f]];
-    [self cr_setViewForScrollIndicator:viewScrollIndicator];
-    [self addSubview:viewScrollIndicator];
-    
-    [self cr_setupObservers];
 }
 
 - (void)cr_refreshScrollIndicator
@@ -98,6 +101,12 @@ static const CGFloat CRScrollIndicatorLeftRightThreshold = 16.0f;
 {
     @try {
         [self cr_unsetObservers];
+        
+        [[self cr_getBackgroundViewForScrollIndicator] removeFromSuperview];
+        [[self cr_getViewForScrollIndicator] removeFromSuperview];
+        
+        [self cr_setBackgroundViewForScrollIndicator:nil];
+        [self cr_setViewForScrollIndicator:nil];
     }
     @catch (NSException *exception) {
         

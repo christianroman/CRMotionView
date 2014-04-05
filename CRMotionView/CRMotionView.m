@@ -65,6 +65,8 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
     
     _minimumXOffset = 0;
     
+    _scrollIndicatorEnabled = YES;
+    
     [self startMonitoring];
 }
 
@@ -95,6 +97,16 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
         [self startMonitoring];
     } else {
         [self stopMonitoring];
+    }
+}
+
+- (void)setScrollIndicatorEnabled:(BOOL)scrollIndicatorEnabled
+{
+    _scrollIndicatorEnabled = scrollIndicatorEnabled;
+    if (scrollIndicatorEnabled) {
+        [_scrollView cr_enableScrollIndicator];
+    } else {
+        [_scrollView cr_disableScrollIndicator];
     }
 }
 
