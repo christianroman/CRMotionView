@@ -13,6 +13,10 @@
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, assign, getter = isMotionEnabled) BOOL motionEnabled;
 
+- (void)setImage:(UIImage *)image withScrollIndicator:(BOOL)indicator;
+- (void)setScrollIndicator;
+
+
 - (instancetype)initWithFrame:(CGRect)frame image:(UIImage *)image;
 
 @end
