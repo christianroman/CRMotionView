@@ -29,7 +29,9 @@
     [super viewDidLoad];
 	
     CRMotionView *motionView = [[CRMotionView alloc] initWithFrame:self.view.bounds];
-    [motionView setImage:[UIImage imageNamed:@"Image"]];
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Image"]];
+    [motionView setContentView:imageView];
     [self.view addSubview:motionView];
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(16, self.view.frame.size.height - 50, 110, 20)];
