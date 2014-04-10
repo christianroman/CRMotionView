@@ -10,10 +10,12 @@
 
 @interface CRMotionView : UIView
 
-@property (nonatomic, strong) UIImage *image;
+@property (nonatomic, strong) UIImage  *image;
+@property (nonatomic, strong) UIView   *contentView;
 @property (nonatomic, assign, getter = isMotionEnabled) BOOL motionEnabled;
 @property (nonatomic, assign, getter = isScrollIndicatorEnabled) BOOL scrollIndicatorEnabled;
 
 - (instancetype)initWithFrame:(CGRect)frame image:(UIImage *)image;
+- (instancetype)initWithFrame:(CGRect)frame contentView:(UIView *)contentView;
 
 @end

@@ -21,7 +21,7 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
 
 @property (nonatomic, strong) CMMotionManager *motionManager;
 @property (nonatomic, strong) UIScrollView *scrollView;
-@property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) UIView *containerView;
 
 @property (nonatomic, assign) CGFloat motionRate;
 @property (nonatomic, assign) NSInteger minimumXOffset;
@@ -51,6 +51,16 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
     return self;
 }
 
+- (instancetype)initWithFrame:(CGRect)frame contentView:(UIView *)contentView;
+{
+    self = [self initWithFrame:frame];
+    if (self) {
+        [self setContentView:contentView];
+    }
+    return self;
+}
+
+
 - (void)commonInit
 {
     _scrollView = [[UIScrollView alloc] initWithFrame:_viewFrame];
@@ -59,35 +69,40 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
     [_scrollView setContentSize:CGSizeZero];
     [self addSubview:_scrollView];
     
-    _imageView = [[UIImageView alloc] initWithFrame:_viewFrame];
-    [_imageView setBackgroundColor:[UIColor blackColor]];
-    [_scrollView addSubview:_imageView];
+    _containerView = [[UIView alloc] initWithFrame:_viewFrame];
+    [_scrollView addSubview:_containerView];
+
     
     _minimumXOffset = 0;
-    
-    _scrollIndicatorEnabled = YES;
     
     [self startMonitoring];
 }
 
 #pragma mark - Setters
 
-- (void)setImage:(UIImage *)image
+- (void)setContentView:(UIView *)contentView
 {
-    _image = image;
+    CGFloat width = _viewFrame.size.height / contentView.frame.size.height * contentView.frame.size.width;
+    [contentView setFrame:CGRectMake(0, 0, width, _viewFrame.size.height)];
+
+    [_containerView addSubview:contentView];
+    [self setScrollIndicatorEnabled:_scrollIndicatorEnabled];
     
-    CGFloat width = _viewFrame.size.height / _image.size.height * _image.size.width;
-    [_imageView setFrame:CGRectMake(0, 0, width, _viewFrame.size.height)];
-    [_imageView setBackgroundColor:[UIColor blackColor]];
-    [_imageView setImage:_image];
-    
-    _scrollView.contentSize = CGSizeMake(_imageView.frame.size.width, _scrollView.frame.size.height);
+    _scrollView.contentSize = CGSizeMake(contentView.frame.size.width, _scrollView.frame.size.height);
     _scrollView.contentOffset = CGPointMake((_scrollView.contentSize.width - _scrollView.frame.size.width) / 2, 0);
     
     [_scrollView cr_enableScrollIndicator];
     
-    _motionRate = _image.size.width / _viewFrame.size.width * CRMotionViewRotationFactor;
+    _motionRate = contentView.frame.size.width / _viewFrame.size.width * CRMotionViewRotationFactor;
     _maximumXOffset = _scrollView.contentSize.width - _scrollView.frame.size.width;
+}
+
+- (void)setImage:(UIImage *)image
+{
+    _image = image;
+
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+    [self setContentView:imageView];
 }
 
 - (void)setMotionEnabled:(BOOL)motionEnabled
