@@ -8,6 +8,8 @@
 
 #import "ViewController.h"
 #import "CRMotionView.h"
+#import <QuartzCore/QuartzCore.h>
+#import <AVFoundation/AVFoundation.h>
 
 @interface ViewController ()
 
@@ -24,15 +26,49 @@
     return self;
 }
 
+- (CRMotionView *)motionViewWithImage
+{
+    CRMotionView *motionView = [[CRMotionView alloc] initWithFrame:self.view.bounds];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Image"]];
+    [motionView setContentView:imageView];
+    [self.view addSubview:motionView];
+    return motionView;
+}
+
+
+- (CRMotionView *)motionViewWithVideo
+{
+    NSString *moviePath = [[NSBundle mainBundle] pathForResource:@"mov_bbb" ofType:@"mp4"];
+    NSURL *movieURL = [NSURL fileURLWithPath:moviePath];
+
+    AVPlayer *player = [AVPlayer playerWithURL:movieURL];
+    player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
+
+    AVPlayerLayer *layer = [AVPlayerLayer layer];
+
+    [layer setPlayer:player];
+    [layer setFrame:CGRectMake(0, 0, 1033, 568)];
+    [layer setBackgroundColor:[UIColor redColor].CGColor];
+    [layer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
+
+    UIView *playerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1033, 568)];
+    [playerView.layer addSublayer:layer];
+
+    CRMotionView *motionView = [[CRMotionView alloc] initWithFrame:self.view.bounds];
+
+    [motionView setContentView:playerView];
+    [self.view addSubview:motionView];
+
+    [player play];
+
+    return motionView;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	
-    CRMotionView *motionView = [[CRMotionView alloc] initWithFrame:self.view.bounds];
-    
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Image"]];
-    [motionView setContentView:imageView];
-    [self.view addSubview:motionView];
+    CRMotionView *motionView = [self motionViewWithVideo];
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(16, self.view.frame.size.height - 50, 110, 20)];
     [titleLabel setText:@"CRMotionView"];
