@@ -45,6 +45,12 @@ CRMotionView *motionView = [[CRMotionView alloc] initWithFrame:self.view.bounds]
 [motionView setImage:[UIImage imageNamed:@"Image"]];
 ```
 
+* **Set a generic view**
+```objc
+UIView *myView = [UIView alloc] init...
+[motionView setContentView:myView];
+```
+
 * **Add to your view**
 ```objc
 [self.view addSubview:motionView];
