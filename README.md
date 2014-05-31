@@ -7,7 +7,7 @@ A custom photo viewer that implements device motion scrolling, inspired by [Face
 [![Build Version](https://cocoapod-badges.herokuapp.com/v/CRMotionView/badge.png)](http://beta.cocoapods.org/?q=CRMotionView)
 [![Build Status](https://travis-ci.org/chroman/CRMotionView.png?branch=master)](https://travis-ci.org/chroman/CRMotionView)
 
-![CRMotionView-main](http://chroman.me/wp-content/uploads/2014/02/main3.jpg)
+<img src="http://chroman.me/wp-content/uploads/2014/02/main3.jpg" width="361">
 
 Installation
 -----
