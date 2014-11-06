@@ -16,7 +16,7 @@ static const CGFloat CRMotionViewRotationMinimumTreshold = 0.1f;
 static const CGFloat CRMotionGyroUpdateInterval = 1 / 100;
 static const CGFloat CRMotionViewRotationFactor = 4.0f;
 
-@interface CRMotionView ()
+@interface CRMotionView () <CRZoomScrollViewDelegate>
 
 @property (nonatomic, assign) CGRect viewFrame;
 
@@ -89,6 +89,7 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
         self.motionEnabled = NO;
         UIImageView *imageView = (UIImageView *)self.contentView;
         CRZoomScrollView *zoomScrollView = [[CRZoomScrollView alloc] initWithFrame:self.bounds];
+        zoomScrollView.zoomDelegate = self;
         zoomScrollView.startOffset = self.scrollView.contentOffset;
         zoomScrollView.imageView = [[UIImageView alloc] initWithImage:imageView.image];
         [self addSubview:zoomScrollView];
@@ -143,6 +144,15 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
         [_scrollView cr_disableScrollIndicator];
     }
 }
+
+#pragma mark - ZoomScrollView delegate
+
+
+- (void)zoomScrollViewWillDismiss:(CRZoomScrollView *)zoomScrollView
+{
+    self.motionEnabled = YES;
+}
+
 
 #pragma mark - Core Motion
 

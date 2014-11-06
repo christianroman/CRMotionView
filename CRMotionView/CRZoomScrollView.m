@@ -6,6 +6,9 @@
 //  Copyright (c) 2014 Christian Roman. All rights reserved.
 //
 
+static float const kTransitionAnimationDuration = .4;
+static float const kAnimationDumping = .8;
+
 #import "CRZoomScrollView.h"
 
 @interface CRZoomScrollView() <UIScrollViewDelegate>
@@ -62,15 +65,19 @@
     if ([self.zoomDelegate respondsToSelector:@selector(zoomScrollViewWillDismiss:)]) {
         [self.zoomDelegate zoomScrollViewWillDismiss:self];
     }
-    
-    [UIView animateWithDuration:1 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+
+    [UIView animateWithDuration:kTransitionAnimationDuration delay:0 usingSpringWithDamping:kAnimationDumping initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         self.zoomScale = self.fullHeightZoomScale;
         self.contentOffset = self.startOffset;
     } completion:^(BOOL finished) {
         if ([self.zoomDelegate respondsToSelector:@selector(zoomScrollViewDidDismiss:)]) {
             [self.zoomDelegate zoomScrollViewDidDismiss:self];
         }
-        [self removeFromSuperview];
+        [UIView animateWithDuration:0.1 animations:^{
+            self.alpha = 0;
+        } completion:^(BOOL finished) {
+            [self removeFromSuperview];
+        }];
     }];
 }
 
@@ -85,7 +92,7 @@
     self.zoomScale = self.fullHeightZoomScale;
     self.contentOffset = self.startOffset;
 
-    [UIView animateWithDuration:1 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+    [UIView animateWithDuration:kTransitionAnimationDuration delay:0 usingSpringWithDamping:kAnimationDumping initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         self.zoomScale = minScale;
     } completion:nil];
 
