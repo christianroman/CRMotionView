@@ -76,25 +76,37 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
     
     _minimumXOffset = 0;
     
+    _motionEnabled = YES;
     [self startMonitoring];
     
+    // Tap gesture to open zoomable view
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
     [self addGestureRecognizer:tapGesture];
 }
 
 
+#pragma mark - UI actions
+
+
 - (void)handleTap:(UITapGestureRecognizer *)gesture
 {
+    // Only work if the content view is an image
     if ([self.contentView isKindOfClass:[UIImageView class]]) {
-        self.motionEnabled = NO;
+        // Stop motion to avoid transition jump between two views
+        [self stopMonitoring];
+        
         UIImageView *imageView = (UIImageView *)self.contentView;
+        
+        // Init and setup the zoomable scroll view
         CRZoomScrollView *zoomScrollView = [[CRZoomScrollView alloc] initWithFrame:self.bounds];
         zoomScrollView.zoomDelegate = self;
-        zoomScrollView.startOffset = self.scrollView.contentOffset;
-        zoomScrollView.imageView = [[UIImageView alloc] initWithImage:imageView.image];
+        zoomScrollView.startOffset  = self.scrollView.contentOffset;
+        zoomScrollView.imageView    = [[UIImageView alloc] initWithImage:imageView.image];
+        
         [self addSubview:zoomScrollView];
     }
 }
+
 
 #pragma mark - Setters
 
@@ -147,10 +159,11 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
 
 #pragma mark - ZoomScrollView delegate
 
-
+// When user dismisses zoomable view, put back motion tracking
 - (void)zoomScrollViewWillDismiss:(CRZoomScrollView *)zoomScrollView
 {
-    self.motionEnabled = YES;
+    // Put back motion if it was enabled
+    self.motionEnabled = self.motionEnabled;
 }
 
 
