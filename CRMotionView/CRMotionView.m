@@ -7,6 +7,7 @@
 //
 
 #import "CRMotionView.h"
+#import "CRZoomScrollView.h"
 #import "UIScrollView+CRScrollIndicator.h"
 
 @import CoreMotion;
@@ -76,6 +77,22 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
     _minimumXOffset = 0;
     
     [self startMonitoring];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+    [self addGestureRecognizer:tapGesture];
+}
+
+
+- (void)handleTap:(UITapGestureRecognizer *)gesture
+{
+    if ([self.contentView isKindOfClass:[UIImageView class]]) {
+        self.motionEnabled = NO;
+        UIImageView *imageView = (UIImageView *)self.contentView;
+        CRZoomScrollView *zoomScrollView = [[CRZoomScrollView alloc] initWithFrame:self.bounds];
+        zoomScrollView.startOffset = self.scrollView.contentOffset;
+        zoomScrollView.imageView = [[UIImageView alloc] initWithImage:imageView.image];
+        [self addSubview:zoomScrollView];
+    }
 }
 
 #pragma mark - Setters
@@ -95,6 +112,8 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
     
     _motionRate = contentView.frame.size.width / _viewFrame.size.width * CRMotionViewRotationFactor;
     _maximumXOffset = _scrollView.contentSize.width - _scrollView.frame.size.width;
+    
+    _contentView = contentView;
 }
 
 - (void)setImage:(UIImage *)image

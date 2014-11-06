@@ -23,6 +23,7 @@
 		22C3C6C918A43A0D00D3D249 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 22C3C6C718A43A0D00D3D249 /* InfoPlist.strings */; };
 		22C3C6CB18A43A0D00D3D249 /* CRMotionViewDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 22C3C6CA18A43A0D00D3D249 /* CRMotionViewDemoTests.m */; };
 		22C3C6D618A43A2500D3D249 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 22C3C6D518A43A2500D3D249 /* ViewController.m */; };
+		5EAA0D151A0BDB9B00A9CE18 /* CRZoomScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EAA0D141A0BDB9B00A9CE18 /* CRZoomScrollView.m */; };
 		EEC7235818F6F53A001D4EFF /* mov_bbb.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = EEC7235718F6F53A001D4EFF /* mov_bbb.mp4 */; };
 		EEC7235C18F70126001D4EFF /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEC7235B18F70126001D4EFF /* QuartzCore.framework */; };
 		EEC7235E18F7012C001D4EFF /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEC7235D18F7012C001D4EFF /* AVFoundation.framework */; };
@@ -62,6 +63,8 @@
 		22C3C6CA18A43A0D00D3D249 /* CRMotionViewDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CRMotionViewDemoTests.m; sourceTree = "<group>"; };
 		22C3C6D418A43A2500D3D249 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		22C3C6D518A43A2500D3D249 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		5EAA0D131A0BDB9B00A9CE18 /* CRZoomScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRZoomScrollView.h; sourceTree = "<group>"; };
+		5EAA0D141A0BDB9B00A9CE18 /* CRZoomScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CRZoomScrollView.m; sourceTree = "<group>"; };
 		EEC7235718F6F53A001D4EFF /* mov_bbb.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = mov_bbb.mp4; sourceTree = "<group>"; };
 		EEC7235918F6FE2E001D4EFF /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		EEC7235B18F70126001D4EFF /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -100,6 +103,8 @@
 			children = (
 				221C689E18A44FA800321D4C /* CRMotionView.h */,
 				221C689F18A44FA800321D4C /* CRMotionView.m */,
+				5EAA0D131A0BDB9B00A9CE18 /* CRZoomScrollView.h */,
+				5EAA0D141A0BDB9B00A9CE18 /* CRZoomScrollView.m */,
 				2257DB7118A5F535001F7FA0 /* UIScrollView+CRScrollIndicator.h */,
 				2257DB7218A5F535001F7FA0 /* UIScrollView+CRScrollIndicator.m */,
 			);
@@ -284,6 +289,7 @@
 				22C3C6D618A43A2500D3D249 /* ViewController.m in Sources */,
 				22C3C6B618A43A0D00D3D249 /* AppDelegate.m in Sources */,
 				22C3C6B218A43A0D00D3D249 /* main.m in Sources */,
+				5EAA0D151A0BDB9B00A9CE18 /* CRZoomScrollView.m in Sources */,
 				2257DB7318A5F535001F7FA0 /* UIScrollView+CRScrollIndicator.m in Sources */,
 				221C68A018A44FA800321D4C /* CRMotionView.m in Sources */,
 			);
