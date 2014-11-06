@@ -3,7 +3,7 @@
 //  CRMotionViewDemo
 //
 //  Created by Tanguy Aladenise on 2014-11-06.
-//  Copyright (c) 2014 Christian Roman. All rights reserved.
+//  Copyright (c) 2014 Tanguy Aladenise. All rights reserved.
 //
 
 static float const kTransitionAnimationDuration = .4;

@@ -77,6 +77,7 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
     _minimumXOffset = 0;
     
     _motionEnabled = YES;
+    _zoomEnabled   = YES;
     [self startMonitoring];
     
     // Tap gesture to open zoomable view
@@ -91,7 +92,7 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
 - (void)handleTap:(UITapGestureRecognizer *)gesture
 {
     // Only work if the content view is an image
-    if ([self.contentView isKindOfClass:[UIImageView class]]) {
+    if ([self.contentView isKindOfClass:[UIImageView class]] && self.isZoomEnabled) {
         // Stop motion to avoid transition jump between two views
         [self stopMonitoring];
         
@@ -100,8 +101,6 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
         // Init and setup the zoomable scroll view
         CRZoomScrollView *zoomScrollView = [[CRZoomScrollView alloc] initFromScrollView:self.scrollView withImage:imageView.image];
         zoomScrollView.zoomDelegate = self;
-//        zoomScrollView.startOffset  = self.scrollView.contentOffset;
-//        zoomScrollView.imageView    = [[UIImageView alloc] initWithImage:imageView.image];
         
         [self addSubview:zoomScrollView];
     }
