@@ -90,13 +90,13 @@ static float const kAnimationDumping            = .8;
         self.zoomScale     = self.fullHeightZoomScale;
         self.contentOffset = self.startOffset;
     } completion:^(BOOL finished) {
-        if ([self.zoomDelegate respondsToSelector:@selector(zoomScrollViewDidDismiss:)]) {
-            [self.zoomDelegate zoomScrollViewDidDismiss:self];
-        }
+        
         [UIView animateWithDuration:0.1 animations:^{
             self.alpha = 0;
         } completion:^(BOOL finished) {
-            [self removeFromSuperview];
+            if ([self.zoomDelegate respondsToSelector:@selector(zoomScrollViewDidDismiss:)]) {
+                [self.zoomDelegate zoomScrollViewDidDismiss:self];
+            }
         }];
     }];
 }

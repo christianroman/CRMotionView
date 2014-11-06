@@ -23,10 +23,12 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
 @property (nonatomic, strong) CMMotionManager *motionManager;
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIView *containerView;
+@property (nonatomic, strong) CRZoomScrollView *zoomScrollView;
 
 @property (nonatomic, assign) CGFloat motionRate;
 @property (nonatomic, assign) NSInteger minimumXOffset;
 @property (nonatomic, assign) NSInteger maximumXOffset;
+@property (nonatomic, assign) BOOL stopTracking;
 
 @end
 
@@ -94,15 +96,15 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
     // Only work if the content view is an image
     if ([self.contentView isKindOfClass:[UIImageView class]] && self.isZoomEnabled) {
         // Stop motion to avoid transition jump between two views
-        [self stopMonitoring];
+//        [self stopMonitoring];
         
         UIImageView *imageView = (UIImageView *)self.contentView;
         
         // Init and setup the zoomable scroll view
-        CRZoomScrollView *zoomScrollView = [[CRZoomScrollView alloc] initFromScrollView:self.scrollView withImage:imageView.image];
-        zoomScrollView.zoomDelegate = self;
+        self.zoomScrollView = [[CRZoomScrollView alloc] initFromScrollView:self.scrollView withImage:imageView.image];
+        self.zoomScrollView.zoomDelegate = self;
         
-        [self addSubview:zoomScrollView];
+        [self addSubview:self.zoomScrollView];
     }
 }
 
@@ -161,8 +163,14 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
 // When user dismisses zoomable view, put back motion tracking
 - (void)zoomScrollViewWillDismiss:(CRZoomScrollView *)zoomScrollView
 {
+    self.stopTracking = YES;
+}
+
+// When user dismisses zoomable view, put back motion tracking
+- (void)zoomScrollViewDidDismiss:(CRZoomScrollView *)zoomScrollView
+{
     // Put back motion if it was enabled
-    self.motionEnabled = self.motionEnabled;
+    self.stopTracking = NO;
 }
 
 
@@ -175,7 +183,7 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
         _motionManager.gyroUpdateInterval = CRMotionGyroUpdateInterval;
     }
     
-    if (![_motionManager isGyroActive] && [_motionManager isGyroAvailable]) {
+    if (![_motionManager isGyroActive] && [_motionManager isGyroAvailable] ) {
         [_motionManager startGyroUpdatesToQueue:[NSOperationQueue currentQueue]
                                     withHandler:^(CMGyroData *gyroData, NSError *error) {
                                         CGFloat rotationRate = gyroData.rotationRate.y;
@@ -186,13 +194,18 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
                                             } else if (offsetX < _minimumXOffset) {
                                                 offsetX = _minimumXOffset;
                                             }
-                                            [UIView animateWithDuration:0.3f
-                                                                  delay:0.0f
-                                                                options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionCurveEaseOut
-                                                             animations:^{
-                                                                 [_scrollView setContentOffset:CGPointMake(offsetX, 0) animated:NO];
+                                            
+                                            if (!self.stopTracking) {
+                                                [UIView animateWithDuration:0.3f
+                                                                      delay:0.0f
+                                                                    options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionCurveEaseOut
+                                                                 animations:^{
+                                                                     [_scrollView setContentOffset:CGPointMake(offsetX, 0) animated:NO];
+                                                                     self.zoomScrollView.startOffset = CGPointMake(offsetX, 0);
+                                                                 }
+                                                                 completion:nil];
                                             }
-                                                             completion:nil];
+                                            
                                         }
                                     }];
     } else {
