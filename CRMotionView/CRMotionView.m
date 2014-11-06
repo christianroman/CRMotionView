@@ -98,10 +98,10 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
         UIImageView *imageView = (UIImageView *)self.contentView;
         
         // Init and setup the zoomable scroll view
-        CRZoomScrollView *zoomScrollView = [[CRZoomScrollView alloc] initWithFrame:self.bounds];
+        CRZoomScrollView *zoomScrollView = [[CRZoomScrollView alloc] initFromScrollView:self.scrollView withImage:imageView.image];
         zoomScrollView.zoomDelegate = self;
-        zoomScrollView.startOffset  = self.scrollView.contentOffset;
-        zoomScrollView.imageView    = [[UIImageView alloc] initWithImage:imageView.image];
+//        zoomScrollView.startOffset  = self.scrollView.contentOffset;
+//        zoomScrollView.imageView    = [[UIImageView alloc] initWithImage:imageView.image];
         
         [self addSubview:zoomScrollView];
     }

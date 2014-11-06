@@ -16,13 +16,14 @@ static float const kAnimationDumping            = .8;
 // The zoom scale required to show image with full height
 @property float fullHeightZoomScale;
 
+@property (nonatomic) UIImageView *imageView;
 
 @end
 
 @implementation CRZoomScrollView
 
 
-- (instancetype)init
+- (id)init
 {
     self = [super init];
     if (self) {
@@ -54,6 +55,18 @@ static float const kAnimationDumping            = .8;
 }
 
 
+- (id)initFromScrollView:(UIScrollView *)scrollView withImage:(UIImage *)image;
+{
+    self = [self initWithFrame:scrollView.frame];
+    if (self) {
+        self.startOffset = scrollView.contentOffset;
+        self.image       = image;
+    }
+    
+    return self;
+}
+
+
 - (void)initialization
 {
     self.delegate        = self;
@@ -65,6 +78,7 @@ static float const kAnimationDumping            = .8;
 
 
 #pragma mark - UI actions
+
 
 - (void)handleTap:(UITapGestureRecognizer *)gesture
 {
@@ -156,10 +170,11 @@ static float const kAnimationDumping            = .8;
 #pragma mark - Setters
 
 
-- (void)setImageView:(UIImageView *)imageView
+- (void)setImage:(UIImage *)image
 {
     // Force setup for zoomable imageView
-    _imageView = imageView;
+    _image           = image;
+    _imageView       = [[UIImageView alloc] initWithImage:_image];
     _imageView.frame = (CGRect){.origin = CGPointMake(0, 0), .size = _imageView.image.size};
     
     [self addSubview:_imageView];

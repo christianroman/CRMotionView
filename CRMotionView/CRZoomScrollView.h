@@ -9,15 +9,17 @@
 
 @protocol CRZoomScrollViewDelegate;
 
-
 #import <UIKit/UIKit.h>
 
 @interface CRZoomScrollView : UIScrollView
 
 @property (nonatomic, assign) id <CRZoomScrollViewDelegate> zoomDelegate;
 
-@property (nonatomic) UIImageView *imageView;
+@property (nonatomic) UIImage *image;
 @property CGPoint startOffset;
+
+
+- (id)initFromScrollView:(UIScrollView *)scrollView withImage:(UIImage *)image;
 
 @end
 
