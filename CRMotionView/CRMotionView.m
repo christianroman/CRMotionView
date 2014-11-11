@@ -7,6 +7,7 @@
 //
 
 #import "CRMotionView.h"
+#import "CRZoomScrollView.h"
 #import "UIScrollView+CRScrollIndicator.h"
 
 @import CoreMotion;
@@ -15,17 +16,19 @@ static const CGFloat CRMotionViewRotationMinimumTreshold = 0.1f;
 static const CGFloat CRMotionGyroUpdateInterval = 1 / 100;
 static const CGFloat CRMotionViewRotationFactor = 4.0f;
 
-@interface CRMotionView ()
+@interface CRMotionView () <CRZoomScrollViewDelegate>
 
 @property (nonatomic, assign) CGRect viewFrame;
 
 @property (nonatomic, strong) CMMotionManager *motionManager;
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIView *containerView;
+@property (nonatomic, strong) CRZoomScrollView *zoomScrollView;
 
 @property (nonatomic, assign) CGFloat motionRate;
 @property (nonatomic, assign) NSInteger minimumXOffset;
 @property (nonatomic, assign) NSInteger maximumXOffset;
+@property (nonatomic, assign) BOOL stopTracking;
 
 @end
 
@@ -75,8 +78,36 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
     
     _minimumXOffset = 0;
     
+    _motionEnabled = YES;
+    _zoomEnabled   = YES;
     [self startMonitoring];
+    
+    // Tap gesture to open zoomable view
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+    [self addGestureRecognizer:tapGesture];
 }
+
+
+#pragma mark - UI actions
+
+
+- (void)handleTap:(UITapGestureRecognizer *)gesture
+{
+    // Only work if the content view is an image
+    if ([self.contentView isKindOfClass:[UIImageView class]] && self.isZoomEnabled) {
+        // Stop motion to avoid transition jump between two views
+//        [self stopMonitoring];
+        
+        UIImageView *imageView = (UIImageView *)self.contentView;
+        
+        // Init and setup the zoomable scroll view
+        self.zoomScrollView = [[CRZoomScrollView alloc] initFromScrollView:self.scrollView withImage:imageView.image];
+        self.zoomScrollView.zoomDelegate = self;
+        
+        [self addSubview:self.zoomScrollView];
+    }
+}
+
 
 #pragma mark - Setters
 
@@ -95,6 +126,8 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
     
     _motionRate = contentView.frame.size.width / _viewFrame.size.width * CRMotionViewRotationFactor;
     _maximumXOffset = _scrollView.contentSize.width - _scrollView.frame.size.width;
+    
+    _contentView = contentView;
 }
 
 - (void)setImage:(UIImage *)image
@@ -125,6 +158,22 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
     }
 }
 
+#pragma mark - ZoomScrollView delegate
+
+// When user dismisses zoomable view, put back motion tracking
+- (void)zoomScrollViewWillDismiss:(CRZoomScrollView *)zoomScrollView
+{
+    self.stopTracking = YES;
+}
+
+// When user dismisses zoomable view, put back motion tracking
+- (void)zoomScrollViewDidDismiss:(CRZoomScrollView *)zoomScrollView
+{
+    // Put back motion if it was enabled
+    self.stopTracking = NO;
+}
+
+
 #pragma mark - Core Motion
 
 - (void)startMonitoring
@@ -134,7 +183,7 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
         _motionManager.gyroUpdateInterval = CRMotionGyroUpdateInterval;
     }
     
-    if (![_motionManager isGyroActive] && [_motionManager isGyroAvailable]) {
+    if (![_motionManager isGyroActive] && [_motionManager isGyroAvailable] ) {
         [_motionManager startGyroUpdatesToQueue:[NSOperationQueue currentQueue]
                                     withHandler:^(CMGyroData *gyroData, NSError *error) {
                                         CGFloat rotationRate = gyroData.rotationRate.y;
@@ -145,13 +194,18 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
                                             } else if (offsetX < _minimumXOffset) {
                                                 offsetX = _minimumXOffset;
                                             }
-                                            [UIView animateWithDuration:0.3f
-                                                                  delay:0.0f
-                                                                options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionCurveEaseOut
-                                                             animations:^{
-                                                                 [_scrollView setContentOffset:CGPointMake(offsetX, 0) animated:NO];
+                                            
+                                            if (!self.stopTracking) {
+                                                [UIView animateWithDuration:0.3f
+                                                                      delay:0.0f
+                                                                    options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionCurveEaseOut
+                                                                 animations:^{
+                                                                     [_scrollView setContentOffset:CGPointMake(offsetX, 0) animated:NO];
+                                                                     self.zoomScrollView.startOffset = CGPointMake(offsetX, 0);
+                                                                 }
+                                                                 completion:nil];
                                             }
-                                                             completion:nil];
+                                            
                                         }
                                     }];
     } else {

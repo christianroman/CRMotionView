@@ -14,6 +14,8 @@
 @property (nonatomic, strong) UIView   *contentView;
 @property (nonatomic, assign, getter = isMotionEnabled) BOOL motionEnabled;
 @property (nonatomic, assign, getter = isScrollIndicatorEnabled) BOOL scrollIndicatorEnabled;
+@property (nonatomic, assign, getter = isZoomEnabled) BOOL zoomEnabled;
+
 
 - (instancetype)initWithFrame:(CGRect)frame image:(UIImage *)image;
 - (instancetype)initWithFrame:(CGRect)frame contentView:(UIView *)contentView;
