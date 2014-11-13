@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Tanguy Aladenise. All rights reserved.
 //
 
+#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
+
 static float const kTransitionAnimationDuration = .4;
 static float const kAnimationDumping            = .8;
 
@@ -170,7 +172,7 @@ static float const kAnimationDumping            = .8;
 
 - (void)scrollViewDidZoom:(UIScrollView *)scrollView
 {
-    if (self.allowCentering) {
+    if (self.allowCentering || SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
         NSLog(@"autoamic center");
         [self centerScrollViewContents];
     }
