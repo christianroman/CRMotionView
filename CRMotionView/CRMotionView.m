@@ -95,10 +95,16 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
 {
     // Only work if the content view is an image
     if ([self.contentView isKindOfClass:[UIImageView class]] && self.isZoomEnabled) {
+        
+        UIImageView *imageView = (UIImageView *)self.contentView;
+        if (CGRectGetWidth(self.contentView.frame) >= imageView.image.size.width) {
+            return;
+        }
+        
         // Stop motion to avoid transition jump between two views
 //        [self stopMonitoring];
         
-        UIImageView *imageView = (UIImageView *)self.contentView;
+       
         
         // Init and setup the zoomable scroll view
         self.zoomScrollView = [[CRZoomScrollView alloc] initFromScrollView:self.scrollView withImage:imageView.image];
@@ -113,6 +119,10 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
 
 - (void)setContentView:(UIView *)contentView
 {
+    if (_contentView) {
+        [_contentView removeFromSuperview];
+    }
+    
     CGFloat width = _viewFrame.size.height / contentView.frame.size.height * contentView.frame.size.width;
     [contentView setFrame:CGRectMake(0, 0, width, _viewFrame.size.height)];
 
@@ -178,6 +188,13 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
 
 - (void)startMonitoring
 {
+    if ([self.contentView isKindOfClass:[UIImageView class]]) {
+        UIImageView *imageView = (UIImageView *)self.contentView;
+        if (CGRectGetWidth(self.contentView.frame) >= imageView.image.size.width) {
+            return;
+        }
+    }
+    
     if (!_motionManager) {
         _motionManager = [[CMMotionManager alloc] init];
         _motionManager.gyroUpdateInterval = CRMotionGyroUpdateInterval;

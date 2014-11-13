@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Tanguy Aladenise. All rights reserved.
 //
 
+#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
+
 static float const kTransitionAnimationDuration = .4;
 static float const kAnimationDumping            = .8;
 
@@ -13,10 +15,13 @@ static float const kAnimationDumping            = .8;
 
 @interface CRZoomScrollView() <UIScrollViewDelegate>
 
-// The zoom scale required to show image with full height
-@property float fullHeightZoomScale;
 
 @property (nonatomic) UIImageView *imageView;
+
+@property BOOL allowCentering;
+
+// The zoom scale required to show image with full height
+@property CGRect motionFrame;
 
 @end
 
@@ -85,10 +90,11 @@ static float const kAnimationDumping            = .8;
     if ([self.zoomDelegate respondsToSelector:@selector(zoomScrollViewWillDismiss:)]) {
         [self.zoomDelegate zoomScrollViewWillDismiss:self];
     }
-
+    
+    self.allowCentering = NO;
     [UIView animateWithDuration:kTransitionAnimationDuration delay:0 usingSpringWithDamping:kAnimationDumping initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        self.zoomScale     = self.fullHeightZoomScale;
-        self.contentOffset = self.startOffset;
+        self.contentOffset   = self.startOffset;
+        self.imageView.frame = self.motionFrame;
     } completion:^(BOOL finished) {
         
         [UIView animateWithDuration:0.1 animations:^{
@@ -99,6 +105,7 @@ static float const kAnimationDumping            = .8;
             }
         }];
     }];
+    
 }
 
 
@@ -116,15 +123,17 @@ static float const kAnimationDumping            = .8;
     self.maximumZoomScale = 1.0f;
     
     // Setup the scrollview to be exactly like the motion view (zoom scale and position)
-    self.fullHeightZoomScale = (minScale * CGRectGetHeight(self.bounds)) / (minScale * self.imageView.image.size.height);
-    self.zoomScale           = self.fullHeightZoomScale;
-    self.contentOffset       = self.startOffset;
-
+    self.zoomScale     = (minScale * CGRectGetHeight(self.bounds)) / (minScale * self.imageView.image.size.height);;
+    self.contentOffset = self.startOffset;
+    self.motionFrame   = self.imageView.frame;
+    
     // Animate to init state
     [UIView animateWithDuration:kTransitionAnimationDuration delay:0 usingSpringWithDamping:kAnimationDumping initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         self.zoomScale = minScale;
-    } completion:nil];
-
+    } completion:^(BOOL finished) {
+        self.allowCentering = YES;
+    }];
+    
     
     [self centerScrollViewContents];
 }
@@ -141,7 +150,7 @@ static float const kAnimationDumping            = .8;
     } else {
         contentsFrame.origin.x = 0.0f;
     }
-
+    
     if (contentsFrame.size.height < boundsSize.height) {
         contentsFrame.origin.y = (boundsSize.height - contentsFrame.size.height) / 2.0f;
     } else {
@@ -163,7 +172,10 @@ static float const kAnimationDumping            = .8;
 
 - (void)scrollViewDidZoom:(UIScrollView *)scrollView
 {
-    [self centerScrollViewContents];
+    if (self.allowCentering || SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
+        NSLog(@"autoamic center");
+        [self centerScrollViewContents];
+    }
 }
 
 
