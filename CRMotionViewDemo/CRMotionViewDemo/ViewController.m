@@ -31,7 +31,6 @@
     CRMotionView *motionView = [[CRMotionView alloc] initWithFrame:self.view.bounds];
     UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Image"]];
     [motionView setContentView:imageView];
-    [motionView setScrollDragEnabled:YES];
     [self.view addSubview:motionView];
     return motionView;
 }
@@ -69,8 +68,11 @@
 {
     [super viewDidLoad];
 	
-    //CRMotionView *motionView = [self motionViewWithImage];
-    CRMotionView *motionView = [self motionViewWithVideo];
+    CRMotionView *motionView = [self motionViewWithImage];
+    //CRMotionView *motionView = [self motionViewWithVideo];
+    
+    [motionView setScrollDragEnabled:YES];
+    [motionView setScrollBounceEnabled:YES];
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(16, self.view.frame.size.height - 50, 110, 20)];
     [titleLabel setText:@"CRMotionView"];

@@ -67,7 +67,7 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
 - (void)commonInit
 {
     _scrollView = [[UIScrollView alloc] initWithFrame:_viewFrame];
-    [_scrollView setUserInteractionEnabled:NO];
+    [_scrollView setScrollEnabled:NO];
     [_scrollView setBounces:NO];
     [_scrollView setContentSize:CGSizeZero];
     [self addSubview:_scrollView];
@@ -81,6 +81,7 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
     _motionEnabled = YES;
     _zoomEnabled   = YES;
     _scrollDragEnabled = NO;
+    _scrollBounceEnabled = NO;
     [self startMonitoring];
     
     // Tap gesture to open zoomable view
@@ -174,12 +175,19 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
     _scrollDragEnabled = scrollDragEnabled;
     
     if (scrollDragEnabled) {
-        [_scrollView setUserInteractionEnabled:YES];
+        [_scrollView setScrollEnabled:YES];
         [_scrollView setDelegate:self];
     } else {
-        [_scrollView setUserInteractionEnabled:NO];
+        [_scrollView setScrollEnabled:NO];
         [_scrollView setDelegate:nil];
     }
+}
+
+- (void)setScrollBounceEnabled:(BOOL)scrollBounceEnabled
+{
+    _scrollBounceEnabled = scrollBounceEnabled;
+    
+    [_scrollView setBounces:scrollBounceEnabled];
 }
 
 #pragma mark - UIScrollView Delegate
