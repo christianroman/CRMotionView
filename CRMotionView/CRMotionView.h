@@ -15,6 +15,7 @@
 @property (nonatomic, assign, getter = isMotionEnabled) BOOL motionEnabled;
 @property (nonatomic, assign, getter = isScrollIndicatorEnabled) BOOL scrollIndicatorEnabled;
 @property (nonatomic, assign, getter = isZoomEnabled) BOOL zoomEnabled;
+@property (nonatomic, assign, getter = isScrollDragEnabled) BOOL scrollDragEnabled;
 
 
 - (instancetype)initWithFrame:(CGRect)frame image:(UIImage *)image;
