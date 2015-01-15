@@ -196,6 +196,10 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
     if (_motionEnabled) [self stopMonitoring];
 }
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    [self.delegate scrollViewDidScrollToOffset:self.scrollView.contentOffset];
+}
+
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
     if (_motionEnabled) [self startMonitoring];
 }

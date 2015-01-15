@@ -8,7 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol CRMotionViewDelegate;
+
 @interface CRMotionView : UIView
+
+@property (nonatomic, assign) id <CRMotionViewDelegate> delegate;
 
 @property (nonatomic, strong) UIImage  *image;
 @property (nonatomic, strong) UIView   *contentView;
@@ -21,5 +25,11 @@
 
 - (instancetype)initWithFrame:(CGRect)frame image:(UIImage *)image;
 - (instancetype)initWithFrame:(CGRect)frame contentView:(UIView *)contentView;
+
+@end
+
+@protocol CRMotionViewDelegate <NSObject>
+
+- (void)scrollViewDidScrollToOffset:(CGPoint)offset;
 
 @end
