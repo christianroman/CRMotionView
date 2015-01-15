@@ -70,6 +70,8 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
     [_scrollView setScrollEnabled:NO];
     [_scrollView setBounces:NO];
     [_scrollView setContentSize:CGSizeZero];
+    [_scrollView setDelaysContentTouches:NO];
+    [_scrollView setExclusiveTouch:YES];
     [self addSubview:_scrollView];
     
     _containerView = [[UIView alloc] initWithFrame:_viewFrame];
