@@ -16,7 +16,7 @@ static const CGFloat CRMotionViewRotationMinimumTreshold = 0.1f;
 static const CGFloat CRMotionGyroUpdateInterval = 1 / 100;
 static const CGFloat CRMotionViewRotationFactor = 4.0f;
 
-@interface CRMotionView () <CRZoomScrollViewDelegate>
+@interface CRMotionView () <CRZoomScrollViewDelegate, UIScrollViewDelegate>
 
 @property (nonatomic, assign) CGRect viewFrame;
 
@@ -67,19 +67,23 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
 - (void)commonInit
 {
     _scrollView = [[UIScrollView alloc] initWithFrame:_viewFrame];
-    [_scrollView setUserInteractionEnabled:NO];
+    [_scrollView setScrollEnabled:NO];
     [_scrollView setBounces:NO];
     [_scrollView setContentSize:CGSizeZero];
+    [_scrollView setExclusiveTouch:YES];
     [self addSubview:_scrollView];
     
     _containerView = [[UIView alloc] initWithFrame:_viewFrame];
+    [_containerView setClipsToBounds:YES];
     [_scrollView addSubview:_containerView];
-
+    
     
     _minimumXOffset = 0;
     
     _motionEnabled = YES;
     _zoomEnabled   = YES;
+    _scrollDragEnabled = NO;
+    _scrollBounceEnabled = NO;
     [self startMonitoring];
     
     // Tap gesture to open zoomable view
@@ -102,9 +106,9 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
         }
         
         // Stop motion to avoid transition jump between two views
-//        [self stopMonitoring];
+        //        [self stopMonitoring];
         
-       
+        
         
         // Init and setup the zoomable scroll view
         self.zoomScrollView = [[CRZoomScrollView alloc] initFromScrollView:self.scrollView withImage:imageView.image];
@@ -125,9 +129,16 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
     
     CGFloat width = _viewFrame.size.height / contentView.frame.size.height * contentView.frame.size.width;
     [contentView setFrame:CGRectMake(0, 0, width, _viewFrame.size.height)];
-
     [_containerView addSubview:contentView];
+    CGRect frame = _containerView.frame;
+    frame.size.width = contentView.frame.size.width;
+    [_containerView setFrame:frame];
     [self setScrollIndicatorEnabled:_scrollIndicatorEnabled];
+    
+    NSDictionary *view = NSDictionaryOfVariableBindings(contentView);
+    
+    [_containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[contentView]|" options:0 metrics:nil views:view]];
+    [_containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[contentView]|" options:0 metrics:nil views:view]];
     
     _scrollView.contentSize = CGSizeMake(contentView.frame.size.width, _scrollView.frame.size.height);
     _scrollView.contentOffset = CGPointMake((_scrollView.contentSize.width - _scrollView.frame.size.width) / 2, 0);
@@ -143,7 +154,7 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
 - (void)setImage:(UIImage *)image
 {
     _image = image;
-
+    
     UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
     [self setContentView:imageView];
 }
@@ -168,6 +179,40 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
     }
 }
 
+- (void)setScrollDragEnabled:(BOOL)scrollDragEnabled
+{
+    _scrollDragEnabled = scrollDragEnabled;
+    
+    if (scrollDragEnabled) {
+        [_scrollView setScrollEnabled:YES];
+        [_scrollView setDelegate:self];
+    } else {
+        [_scrollView setScrollEnabled:NO];
+        [_scrollView setDelegate:nil];
+    }
+}
+
+- (void)setScrollBounceEnabled:(BOOL)scrollBounceEnabled
+{
+    _scrollBounceEnabled = scrollBounceEnabled;
+    
+    [_scrollView setBounces:scrollBounceEnabled];
+}
+
+#pragma mark - UIScrollView Delegate
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
+    if (_motionEnabled) [self stopMonitoring];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    [self.delegate scrollViewDidScrollToOffset:self.scrollView.contentOffset];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+    if (_motionEnabled) [self startMonitoring];
+}
+
 #pragma mark - ZoomScrollView delegate
 
 // When user dismisses zoomable view, put back motion tracking
@@ -182,7 +227,6 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
     // Put back motion if it was enabled
     self.stopTracking = NO;
 }
-
 
 #pragma mark - Core Motion
 

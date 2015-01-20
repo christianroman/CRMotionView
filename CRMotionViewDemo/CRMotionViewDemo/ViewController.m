@@ -71,6 +71,9 @@
     CRMotionView *motionView = [self motionViewWithImage];
     //CRMotionView *motionView = [self motionViewWithVideo];
     
+    [motionView setScrollDragEnabled:YES];
+    [motionView setScrollBounceEnabled:YES];
+    
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(16, self.view.frame.size.height - 50, 110, 20)];
     [titleLabel setText:@"CRMotionView"];
     [titleLabel setShadowOffset:CGSizeMake(0, 1.0f)];
