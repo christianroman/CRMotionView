@@ -245,7 +245,7 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
 {
     if ([self.contentView isKindOfClass:[UIImageView class]]) {
         UIImageView *imageView = (UIImageView *)self.contentView;
-        if (CGRectGetWidth(self.contentView.frame) >= imageView.image.size.width) {
+        if (CGRectGetWidth(_viewFrame) >= imageView.frame.size.width) {
             return;
         }
     }
