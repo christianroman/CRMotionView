@@ -81,6 +81,12 @@
     [titleLabel setTextColor:[UIColor whiteColor]];
     [titleLabel setFont:[UIFont boldSystemFontOfSize:14.0f]];
     [motionView addSubview:titleLabel];
+
+    //test for reusing view
+//    [motionView removeFromSuperview];
+//    [self.view addSubview:motionView];
+//    motionView.image = [UIImage imageNamed:@"Image"];
+//    [motionView removeFromSuperview];
 }
 
 - (void)didReceiveMemoryWarning
