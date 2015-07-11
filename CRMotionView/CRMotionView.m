@@ -10,6 +10,9 @@
 #import "CRZoomScrollView.h"
 #import "UIScrollView+CRScrollIndicator.h"
 
+#define isLandscape UIDeviceOrientationIsLandscape([[UIDevice currentDevice] orientation])
+
+
 @import CoreMotion;
 
 static const CGFloat CRMotionViewRotationMinimumTreshold = 0.1f;
@@ -247,7 +250,7 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
     if (![_motionManager isGyroActive] && [_motionManager isGyroAvailable] ) {
         [_motionManager startGyroUpdatesToQueue:[NSOperationQueue currentQueue]
                                     withHandler:^(CMGyroData *gyroData, NSError *error) {
-                                        CGFloat rotationRate = gyroData.rotationRate.y;
+                                        CGFloat rotationRate = isLandscape ? gyroData.rotationRate.x : gyroData.rotationRate.y;
                                         if (fabs(rotationRate) >= CRMotionViewRotationMinimumTreshold) {
                                             CGFloat offsetX = _scrollView.contentOffset.x - rotationRate * _motionRate;
                                             if (offsetX > _maximumXOffset) {
