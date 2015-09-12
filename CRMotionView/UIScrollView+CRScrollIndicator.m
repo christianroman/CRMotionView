@@ -69,6 +69,9 @@ static const CGFloat CRScrollIndicatorLeftRightThreshold = 16.0f;
         [self addSubview:viewScrollIndicator];
         
         [self cr_setupObservers];
+    }else{
+
+        [self cr_refreshScrollIndicator];
     }
 }
 

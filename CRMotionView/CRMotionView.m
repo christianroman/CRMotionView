@@ -41,7 +41,6 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
 {
     self = [super initWithFrame:frame];
     if (self) {
-        _viewFrame = CGRectMake(0.0, 0.0, CGRectGetWidth(frame), CGRectGetHeight(frame));
         [self commonInit];
         
     }
@@ -66,6 +65,20 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
     return self;
 }
 
+- (void)setFrame:(CGRect)frame; {
+    super.frame = frame;
+    _viewFrame = CGRectMake(0.0, 0.0, CGRectGetWidth(frame), CGRectGetHeight(frame));
+}
+
+- (void)removeFromSuperview; {
+    [super removeFromSuperview];
+    [self clearMonitoringIfNeeded];
+}
+
+- (void)didMoveToSuperview; {
+    [super didMoveToSuperview];
+    [self startMonitoringIfNeeded];
+}
 
 - (void)commonInit
 {
@@ -87,13 +100,11 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
     _zoomEnabled   = YES;
     _scrollDragEnabled = NO;
     _scrollBounceEnabled = NO;
-    [self startMonitoring];
     
     // Tap gesture to open zoomable view
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
     [self addGestureRecognizer:tapGesture];
 }
-
 
 #pragma mark - UI actions
 
@@ -157,7 +168,7 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
 - (void)setImage:(UIImage *)image
 {
     _image = image;
-    
+
     UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
     [self setContentView:imageView];
 }
@@ -237,7 +248,7 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
 {
     if ([self.contentView isKindOfClass:[UIImageView class]]) {
         UIImageView *imageView = (UIImageView *)self.contentView;
-        if (CGRectGetWidth(self.contentView.frame) >= imageView.image.size.width) {
+        if (CGRectGetWidth(_viewFrame) >= imageView.frame.size.width) {
             return;
         }
     }
@@ -277,13 +288,32 @@ static const CGFloat CRMotionViewRotationFactor = 4.0f;
     }
 }
 
+- (void)startMonitoringIfNeeded{
+    if(_motionManager && [_motionManager isGyroActive]){
+        [self stopMonitoring];
+    }
+
+    if(_motionEnabled){
+        [self startMonitoring];
+    }
+}
+
 - (void)stopMonitoring
 {
     [_motionManager stopGyroUpdates];
 }
 
+- (void)clearMonitoringIfNeeded
+{
+    if(_motionManager || [_motionManager isGyroActive] || self.motionEnabled || !self.superview){
+        [self stopMonitoring];
+        _motionManager = nil;
+    }
+}
+
 - (void)dealloc
 {
+    [self clearMonitoringIfNeeded];
     [self.scrollView cr_disableScrollIndicator];
 }
 
